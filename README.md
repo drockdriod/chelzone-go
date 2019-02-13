@@ -5,3 +5,4 @@ by a frontend.
 ## Resources
 - https://gitlab.com/dword4/nhlapi/blob/master/stats-api.md
 - https://github.com/gin-gonic/gin
+- https://developer.okta.com/blog/2018/10/23/build-a-single-page-app-with-go-and-vue
