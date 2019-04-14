@@ -9,42 +9,56 @@ import (
     "context"
     "io/ioutil"
     "github.com/drockdriod/chelzone-go/db"
+	_ "github.com/joho/godotenv/autoload"
     "github.com/mongodb/mongo-go-driver/bson"
     "log"
+    "github.com/drockdriod/chelzone-go/crontasks"
 )
+
+type element map[string]interface{}
 
 func main() {
 	ctx := context.Background()
 
 
 	r := gin.Default()
+	client, err := db.Connect(ctx)
+
+	if err != nil { 
+		log.Fatal("error")
+		log.Fatal(err) 
+	}
+
+	go crontasks.Init()
 
 	// Be sure to use struts here to define a schema in which the JSON would conform to
 	
 	r.GET("/standings", func(c *gin.Context) {
 		// Perform get request on NHL API to get standings
-		client, err := db.Connect(ctx)
 
 		filter := bson.M{}
 
 		cur, err := client.Collection("teams").Find(ctx, filter)
 
+		teams := make(map[string]string)
 
 	   	if err != nil { log.Fatal(err) }
 		
 		defer cur.Close(ctx)
 		
 		for cur.Next(ctx) {
-			elem := &bson.D{}
+			elem := &element{}
 		   	if err := cur.Decode(elem); err != nil {
 				log.Fatal(err)
 			}
 
-		   	
+			teams["lol"] = fmt.Sprint(elem)
+		 
 		   	// if err != nil { log.Fatal(err) }
-	   		fmt.Printf("%s", elem)
 		   // do something with elem....
 		}
+	   	
+	   	fmt.Printf("%s", teams)
 		
 		if err := cur.Err(); err != nil {
 			fmt.Printf("%s", err)

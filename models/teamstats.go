@@ -1,14 +1,14 @@
 package models
 
 type TeamStats struct {
-	teamRef team
-	goalsAgainst int
-	goalsScored int
-	points int
-	divisionRank string
-	conferenceRank string
-	leagueRank string
-	wildCardRank string
-	row int
-	gamesPlayed int
+	TeamRef Team `json:"team" bson:"team"`
+	GoalsAgainst int `json:"goalsAgainst" bson:"goalsAgainst"`
+	GoalsScored int `json:"goalsScored" bson:"goalsScored"`
+	Points int `json:"points" bson:"points"`
+	DivisionRank string `json:"divisionRank" bson:"divisionRank"`
+	ConferenceRank string `json:"conferenceRank" bson:"conferenceRank"`
+	LeagueRank string `json:"leagueRank" bson:"leagueRank"`
+	WildCardRank string `json:"wildCardRank" bson:"wildCardRank"`
+	Row int `json:"row" bson:"row"`
+	GamesPlayed int `json:"gamesPlayed" bson:"gamesPlayed"`
 }

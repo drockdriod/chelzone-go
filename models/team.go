@@ -1,6 +1,6 @@
 package models
 
-type team struct {
-	id int
-	name string
+type Team struct {
+	Id int `json:"id" bson:"id"`
+	Name string `json:"name" bson:"name"`
 }
