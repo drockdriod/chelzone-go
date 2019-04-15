@@ -57,6 +57,39 @@ func getConnectionDetails() {
 
 }
 
+
+func FindOne(collection string, filter interface{}) (interface{}, error) {
+	var v map[string]interface{}
+
+	err := client.Database(dbDetails["dbName"]).Collection(collection).FindOne(dbContext, filter).Decode(&v)
+
+	return v, err
+}
+
+func GetItems(collection string, filter interface{}) ([]bson.M) {
+
+	cur, err := client.Database(dbDetails["dbName"]).Collection(collection).Find(dbContext, filter)
+
+	if err != nil { log.Fatal(err) }
+	defer cur.Close(dbContext)
+
+	jsonArray := []bson.M{}
+
+	for cur.Next(dbContext) {
+	   var result bson.M
+	   err := cur.Decode(&result)
+	   if err != nil { log.Fatal(err) }
+
+	   jsonArray = append(jsonArray, result)
+	   // do something with result....
+	}
+	if err := cur.Err(); err != nil {
+	  log.Fatal(err)
+	}
+
+	return jsonArray
+}
+
 func InsertObj(collection string, jsonBody interface{}) (*mongo.InsertOneResult, error, bsonPrimitive.ObjectID){
 	objectId := bsonPrimitive.NewObjectID()
 
