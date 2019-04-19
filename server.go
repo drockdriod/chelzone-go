@@ -12,7 +12,8 @@ import (
 	_ "github.com/joho/godotenv/autoload"
     "github.com/mongodb/mongo-go-driver/bson"
     "log"
-    "github.com/drockdriod/chelzone-go/crontasks"
+    "github.com/drockdriod/chelzone-go/requests/crontasks"
+    teamsRoute "github.com/drockdriod/chelzone-go/routes/teams"
 )
 
 type element map[string]interface{}
@@ -30,6 +31,11 @@ func main() {
 	}
 
 	go crontasks.Init()
+
+	root := r.Group("/api")
+	{
+		teamsRoute.ServeRoutes(root) 
+	}
 
 	// Be sure to use struts here to define a schema in which the JSON would conform to
 	

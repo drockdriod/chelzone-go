@@ -75,6 +75,7 @@ func GetItems(collection string, filter interface{}) ([]bson.M) {
 
 	jsonArray := []bson.M{}
 
+
 	for cur.Next(dbContext) {
 	   var result bson.M
 	   err := cur.Decode(&result)
