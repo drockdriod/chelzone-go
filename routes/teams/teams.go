@@ -12,5 +12,7 @@ func ServeRoutes(parentPath *gin.RouterGroup) *gin.RouterGroup {
 
 	r.GET("/", teamController.GetAll)
 
+	r.GET("/:team-slug", teamController.GetByTeamSlug)
+
 	return r
 }

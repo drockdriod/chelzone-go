@@ -66,6 +66,28 @@ func FindOne(collection string, filter interface{}) (interface{}, error) {
 	return v, err
 }
 
+func FindByAggregate(collection string, aggregation interface{}) ([]interface{}, error) {
+	cur, err := client.Database(dbDetails["dbName"]).Collection(collection).Aggregate(dbContext, aggregation)
+	defer cur.Close(dbContext)
+
+	jsonArray := []interface{}{}
+
+	for cur.Next(dbContext) {
+	   var result bson.M
+	   err := cur.Decode(&result)
+	   if err != nil { log.Println("aggregate error:"); log.Fatal(err) }
+
+	   jsonArray = append(jsonArray, result)
+	   // do something with result....
+	}
+	if err := cur.Err(); err != nil {
+		log.Println("cur error:");
+	  log.Fatal(err)
+	}
+
+	return jsonArray, err
+}
+
 func GetItems(collection string, filter interface{}) ([]bson.M) {
 
 	cur, err := client.Database(dbDetails["dbName"]).Collection(collection).Find(dbContext, filter)
