@@ -1,4 +1,5 @@
 package models
+// import "github.com/mongodb/mongo-go-driver/bson"
 
 type TeamStats struct {
 	TeamRef Team `json:"team" bson:"team,omitempty"`
@@ -34,4 +35,9 @@ type TeamStats struct {
 	FaceOffWinPercentage string  `json:"faceOffWinPercentage,omitempty" bson:"faceOffWinPercentage,omitempty"`
 	ShootingPctg float32  `json:"shootingPctg,omitempty" bson:"shootingPctg,omitempty"`
 	SavePctg float32  `json:"savePctg,omitempty" bson:"savePctg,omitempty"`
+	// LeagueRecord map[string]int `json:"leagueRecord,omitempty" json:"leagueRecord,omitempty` {
+	// 	wins `json:"wins,omitempty" json:"wins,omitempty`
+	// 	ot `json:"ot,omitempty" json:"ot,omitempty`
+	// 	losses `json:"losses,omitempty" json:"losses,omitempty`
+	// }
 }

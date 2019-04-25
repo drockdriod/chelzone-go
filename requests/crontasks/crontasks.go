@@ -4,6 +4,7 @@ import (
 	"github.com/robfig/cron"
 	"github.com/drockdriod/chelzone-go/requests/standings"
 	"github.com/drockdriod/chelzone-go/requests/teams"
+	"github.com/drockdriod/chelzone-go/requests/players"
     "github.com/mongodb/mongo-go-driver/bson"
 	mongoOptions "github.com/mongodb/mongo-go-driver/mongo/options"
 	"github.com/drockdriod/chelzone-go/db"
@@ -83,6 +84,37 @@ func CollectTeamStats(){
 	}
 }
 
+func CollectTeamPlayers(){
+
+	var team models.Team
+	options := mongoOptions.FindOneAndReplace()
+	options.SetUpsert(true)
+
+	results := db.GetItems("teams", bson.M{})
+
+	for _, v := range results {
+		
+		var body, err = bson.Marshal(v)
+
+		if(err != nil){
+			log.Fatal(err)
+		}
+
+		bson.Unmarshal(body, &team)
+
+		results2 := players.GetPlayersByTeam(team)
+
+		
+		for _, player := range results2 {
+			bson.Unmarshal(body, &player.TeamRef)
+
+			_ = db.FindOneAndReplace("players", bson.M{
+				"person.id": player.Person.Id,
+			}, player, options)
+		}
+	}
+}
+
 func Init(){
 	c := cron.New()
 
@@ -92,6 +124,11 @@ func Init(){
 
 	c.AddFunc("0 30 2 1 9 ?", func() { 
 		CollectTeams()
+	})
+
+
+	c.AddFunc("0 30 2 1 3,7,10 ?", func() { 
+		CollectTeamPlayers()
 	})
 
 	c.AddFunc("0 30 2 * 10,11,12,1,2,3,4 *", func() { 

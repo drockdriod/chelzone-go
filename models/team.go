@@ -9,24 +9,19 @@ import (
 type Team struct {
 	Id int `json:"id" bson:"id"`
 	Name string `json:"name" bson:"name"`
-	Stats FullTeamStats `json:"stats,omitempty" bson:"stats,omitempty"`
+	Stats *FullTeamStats `json:"stats,omitempty" bson:"stats,omitempty"`
+	Roster *[]Player `json:"roster,omitempty" bson:"roster,omitempty"`
 }
 
-func (t Team) GetAll() (*[]Team){
-	teams := new([]Team)
-
+func (t Team) GetAll() ([]bson.M){
 	results := db.GetItems("teams", bson.M{})
 
 	log.Println(results)
 
-	var body, _ = bson.Marshal(results)
-
-	bson.Unmarshal(body, &teams)
-
-	return teams
+	return results
 }
 
-func (t Team) GetByFilter(filter interface{}) (interface{}, error) {
+func (t Team) GetByFilter(filter interface{}) (*Team, error) {
 	team := new(Team)
 
 	results, err := db.FindByAggregate("teams", filter)
@@ -34,9 +29,6 @@ func (t Team) GetByFilter(filter interface{}) (interface{}, error) {
 	var body, _ = bson.Marshal(results[0])
 
 	bson.Unmarshal(body, &team)
-
-	log.Println("results")
-	log.Println(results)
 
 	return team, err
 }

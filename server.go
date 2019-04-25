@@ -14,6 +14,7 @@ import (
     "log"
     "github.com/drockdriod/chelzone-go/requests/crontasks"
     teamsRoute "github.com/drockdriod/chelzone-go/routes/teams"
+    playersRoute "github.com/drockdriod/chelzone-go/routes/players"
 )
 
 type element map[string]interface{}
@@ -35,6 +36,7 @@ func main() {
 	root := r.Group("/api")
 	{
 		teamsRoute.ServeRoutes(root) 
+		playersRoute.ServeRoutes(root)
 	}
 
 	// Be sure to use struts here to define a schema in which the JSON would conform to

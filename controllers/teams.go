@@ -36,6 +36,12 @@ func (controller TeamController) GetByTeamSlug(c *gin.Context) {
 			"as": "stats",
 		}}},
 		{{"$unwind", "$stats"}},
+		{{"$lookup",bson.M{
+			"from": "players",
+			"localField": "id",
+			"foreignField": "team.id",
+			"as": "roster",
+		}}},
 	})
 
 	log.Println(team)
