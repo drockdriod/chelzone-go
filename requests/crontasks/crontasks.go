@@ -41,13 +41,16 @@ func CollectStandings(){
 func CollectTeams(){
 	results := teams.GetTeams()
 
-	log.Println(results)
 
 	options := mongoOptions.FindOneAndReplace()
 	options.SetUpsert(true)
 
 	for _, r := range results.TeamsList {
 		log.Println(r)
+
+		logo := teams.GetLogoByTeam(r)
+
+		r.Logo = logo
 
 		result := db.FindOneAndReplace("teams", bson.M{
 			"id": r.Id,
@@ -115,6 +118,45 @@ func CollectTeamPlayers(){
 	}
 }
 
+func CollectPlayerImages(){
+	var player models.Player
+
+	results := db.GetItems("players", bson.M{})
+
+	log.Println(results)
+
+	for _, v := range results {
+		var body, err = bson.Marshal(v)
+
+		if(err != nil){
+			log.Fatal(err)
+		}
+
+		bson.Unmarshal(body, &player)
+
+		img := players.GetPlayerImage(player)
+
+
+		player.BadgeImage = img
+
+		result, err := db.UpdateObj(
+			"players", 
+			bson.M{"person.id": player.Person.Id, }, 
+			bson.D{
+				{"$set", bson.M{ 
+					"badgeImage": player.BadgeImage,
+				}},
+			},
+		)
+
+		if(err != nil){
+			log.Fatal(err.Error())
+		}
+
+		log.Println(result)
+	}
+}
+
 func Init(){
 	c := cron.New()
 
@@ -129,6 +171,7 @@ func Init(){
 
 	c.AddFunc("0 30 2 1 3,7,10 ?", func() { 
 		CollectTeamPlayers()
+		CollectPlayerImages()
 	})
 
 	c.AddFunc("0 30 2 * 10,11,12,1,2,3,4 *", func() { 

@@ -9,6 +9,7 @@ import (
     "github.com/mongodb/mongo-go-driver/bson"
     "github.com/drockdriod/chelzone-go/utils"
     "log"
+    "encoding/json"
 )
 
 
@@ -21,13 +22,16 @@ func (controller PlayerController) GetByPlayerSlug(c *gin.Context) {
 	slug := c.Param("player-slug")
 	name := utils.CapitalizeEachWord(slug, "-")
 
+	log.Println(name)
+
 	player, err := playerModel.GetOne(bson.M{
 		"person.fullName": name,
 	})
 
+
 	p := playerReqs.GetPlayerStatsById(player.Person.Id)
 
-	log.Println(p)
+
 
 	if(err != nil){
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -36,9 +40,11 @@ func (controller PlayerController) GetByPlayerSlug(c *gin.Context) {
 		return
 	}
 
+	body, _ := json.Marshal(p)
+	json.Unmarshal(body, &player.PlayerStats)
+
 	c.JSON(http.StatusOK, gin.H{
 		"player": player,
-		"stats": p,
 	})
 
 	return

@@ -55,6 +55,26 @@ func GetPlayerStatsById(id int) (models.PlayerStats){
 	return data.StatsList[0].Splits[0].PlayerStats
 }
 
+func GetPlayerImage(player models.Player) []byte{
+	resp, err := http.Get(fmt.Sprintf("https://nhl.bamcontent.com/images/headshots/current/168x168/%d.jpg", player.Person.Id))
+		
+	if err != nil {
+		fmt.Printf("Error: %s",err)
+		os.Exit(1)
+	}
+
+	defer resp.Body.Close()
+
+	body, err := ioutil.ReadAll(resp.Body)
+
+	if err != nil {
+        fmt.Printf("%s", err)
+        os.Exit(1)
+    }
+
+    return body
+}
+
 func GetPlayersByTeam(team models.Team) ([]models.Player){
 	resp, err := http.Get(fmt.Sprintf("https://statsapi.web.nhl.com/api/v1/teams/%v/roster", team.Id))
 		

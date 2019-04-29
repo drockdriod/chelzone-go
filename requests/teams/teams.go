@@ -54,6 +54,25 @@ func GetTeams() (Teams) {
 	return data
 }
 
+func GetLogoByTeam(team models.Team) []byte {
+	resp, err := http.Get(fmt.Sprintf("https://www-league.nhlstatic.com/images/logos/teams-current-primary-light/%v.svg",team.Id))
+
+	if err != nil {
+		fmt.Printf("Error: %s",err)
+		os.Exit(1)
+	}
+
+	defer resp.Body.Close()
+	body1, err := ioutil.ReadAll(resp.Body)
+
+	if err != nil {
+        fmt.Printf("%s", err)
+        os.Exit(1)
+    }
+
+    return body1
+}
+
 
 func GetStatsByTeam(team models.Team) models.TeamStats {
 	resp, err := http.Get(fmt.Sprintf("https://statsapi.web.nhl.com/api/v1/teams/%v/stats", team.Id))

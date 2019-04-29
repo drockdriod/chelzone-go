@@ -23,6 +23,8 @@ type Player struct{
 	Person Person `json:"person" bson:"person"`
 	JerseyNumber string `json:"jerseyNumber" bson:"jerseyNumber"`
 	Position position `json:"position" bson:"position"`
+	PlayerStats *PlayerStats `json:"stats,omitempty" bson:"-"`
+	BadgeImage []byte `json:"badgeImage,omitempty" bson:"badgeImage,omitempty"`
 }
 
 type PlayerStats struct{

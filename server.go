@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/gin-contrib/cors"
 	"net/http"
 	"fmt"
 	"os"
@@ -19,11 +20,43 @@ import (
 
 type element map[string]interface{}
 
+func CORSMiddleware() gin.HandlerFunc {
+    return func(c *gin.Context) {
+        c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+        c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
+        c.Writer.Header().Set("Access-Control-Allow-Headers", "*")
+        c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT, DELETE")
+        // c.Writer.Header().Set("Content-Type", "application/json")
+
+        if c.Request.Method == "OPTIONS" {
+             fmt.Println("OPTIONS")
+             c.AbortWithStatus(204)
+             return
+         } else {
+             c.Next()
+         }
+        // if c.Request.Method == "OPTIONS" {
+        //     c.AbortWithStatus(204)
+        //     return
+        // }
+
+        
+    }
+}
+
 func main() {
 	ctx := context.Background()
 
 
 	r := gin.Default()
+	config := cors.DefaultConfig()
+	// config.AllowAllOrigins = true
+	config.AllowOrigins = []string{"*"}
+	config.AllowMethods = []string{"POST", "GET", "OPTIONS", "PUT"}
+	config.AllowHeaders = []string{"Accept", "access-control-allow-origin", "Content-Type", "Content-Length", "Accept-Encoding", "X-CSRF-Token", "Authorization"}
+	r.Use(cors.New(config))
+	// r.Use(cors.Default())
+	
 	client, err := db.Connect(ctx)
 
 	if err != nil { 
@@ -103,5 +136,5 @@ func main() {
 
 		
 	})
-	r.Run() // listen and serve on 0.0.0.0:8080
+	r.Run(":8081") // listen and serve on 0.0.0.0:8080
 }
