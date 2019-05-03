@@ -16,33 +16,10 @@ import (
     "github.com/drockdriod/chelzone-go/requests/crontasks"
     teamsRoute "github.com/drockdriod/chelzone-go/routes/teams"
     playersRoute "github.com/drockdriod/chelzone-go/routes/players"
+    "github.com/drockdriod/chelzone-go/requests/twitter"
 )
 
 type element map[string]interface{}
-
-func CORSMiddleware() gin.HandlerFunc {
-    return func(c *gin.Context) {
-        c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
-        c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
-        c.Writer.Header().Set("Access-Control-Allow-Headers", "*")
-        c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT, DELETE")
-        // c.Writer.Header().Set("Content-Type", "application/json")
-
-        if c.Request.Method == "OPTIONS" {
-             fmt.Println("OPTIONS")
-             c.AbortWithStatus(204)
-             return
-         } else {
-             c.Next()
-         }
-        // if c.Request.Method == "OPTIONS" {
-        //     c.AbortWithStatus(204)
-        //     return
-        // }
-
-        
-    }
-}
 
 func main() {
 	ctx := context.Background()
@@ -50,12 +27,10 @@ func main() {
 
 	r := gin.Default()
 	config := cors.DefaultConfig()
-	// config.AllowAllOrigins = true
 	config.AllowOrigins = []string{"*"}
 	config.AllowMethods = []string{"POST", "GET", "OPTIONS", "PUT"}
 	config.AllowHeaders = []string{"Accept", "access-control-allow-origin", "Content-Type", "Content-Length", "Accept-Encoding", "X-CSRF-Token", "Authorization"}
 	r.Use(cors.New(config))
-	// r.Use(cors.Default())
 	
 	client, err := db.Connect(ctx)
 
@@ -63,6 +38,12 @@ func main() {
 		log.Fatal("error")
 		log.Fatal(err) 
 	}
+
+	twitterClient := twitter.Connect()
+	log.Println("TWIITERR")
+	log.Println(twitterClient)
+	// twitter.GetUsers()
+
 
 	go crontasks.Init()
 

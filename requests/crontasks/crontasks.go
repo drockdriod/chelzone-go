@@ -38,6 +38,30 @@ func CollectStandings(){
 
 }
 
+func CollectTopLeaders(){
+	
+	statsLeaders := players.GetStatsLeaders()
+
+	goalieStats := statsLeaders.GoalieStats
+	playerStats := statsLeaders.PlayerStats
+
+
+	for _, grecord := range goalieStats {
+		
+		players.MarshalAndInsertLeaders(&grecord)
+
+	}
+
+
+	for _, precord := range playerStats {
+		
+		players.MarshalAndInsertLeaders(&precord)
+
+		
+	}
+}
+
+
 func CollectTeams(){
 	results := teams.GetTeams()
 
@@ -46,7 +70,6 @@ func CollectTeams(){
 	options.SetUpsert(true)
 
 	for _, r := range results.TeamsList {
-		log.Println(r)
 
 		logo := teams.GetLogoByTeam(r)
 
@@ -123,7 +146,6 @@ func CollectPlayerImages(){
 
 	results := db.GetItems("players", bson.M{})
 
-	log.Println(results)
 
 	for _, v := range results {
 		var body, err = bson.Marshal(v)
@@ -139,7 +161,7 @@ func CollectPlayerImages(){
 
 		player.BadgeImage = img
 
-		result, err := db.UpdateObj(
+		_, err = db.UpdateObj(
 			"players", 
 			bson.M{"person.id": player.Person.Id, }, 
 			bson.D{
@@ -153,7 +175,6 @@ func CollectPlayerImages(){
 			log.Fatal(err.Error())
 		}
 
-		log.Println(result)
 	}
 }
 
@@ -162,6 +183,7 @@ func Init(){
 
 	c.AddFunc("0 30 22-23 * 10,11,12,1,2,3,4 *", func() { 
 		CollectStandings()
+		CollectTopLeaders()
 	})
 
 	c.AddFunc("0 30 2 1 9 ?", func() { 

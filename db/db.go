@@ -132,6 +132,11 @@ func InsertObj(collection string, jsonBody interface{}) (*mongo.InsertOneResult,
 	return res, err, objectId
 }
 
+func InsertMany(collection string, documents []interface{}, options *mongoOptions.InsertManyOptions) (*mongo.InsertManyResult, error){
+	res, err := client.Database(dbDetails["dbName"]).Collection(collection).InsertMany(dbContext, documents, options)
+	return res,err
+}
+
 func UpdateObj(collection string,filter interface{}, jsonBody interface{}) (*mongo.UpdateResult, error){
 	return client.Database(dbDetails["dbName"]).Collection(collection).UpdateOne(dbContext, filter, jsonBody)
 }

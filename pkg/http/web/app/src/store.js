@@ -4,22 +4,31 @@ import Vuex from 'vuex';
 import * as TeamGetters from './getters/TeamGetters'
 import * as TeamActions from './actions/TeamActions'
 
+import * as PlayerGetters from './getters/PlayerGetters'
+import * as PlayerActions from './actions/PlayerActions'
+
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
 	state: {
-		teams: []
+		teams: [],
+        leaders: []
     },
 	mutations: {
-    	setTeams(state, teams) {
+        setTeams(state, teams) {
             state.teams = teams
+        },
+        setLeaders(state, leaders) {
+            state.leaders = leaders
         }
     },
     getters: {
-        ...TeamGetters
+        ...TeamGetters,
+        ...PlayerGetters
     },
     actions: {
-        ...TeamActions
+        ...TeamActions,
+        ...PlayerActions
     }
 })
 

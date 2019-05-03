@@ -8,7 +8,7 @@ import(
 type Person struct{
 	Id int `json:"id" bson:"id"`
 	FullName string `json:"fullName" bson:"fullName"`
-	Link string `json:"link" bson:"link"`
+	Link string `json:"link,omitempty" bson:"link,omitempty"`
 }
 
 type position struct {
@@ -57,6 +57,28 @@ type PlayerStats struct{
 	PowerPlayTimeOnIcePerGame string `json:"powerPlayTimeOnIcePerGame" bson:"powerPlayTimeOnIcePerGame"`
 }
 
+type PlayerLeader struct{
+	Measure string `json:"measure" bson:"measure"`
+	PersonRef Person `json:"person" bson:"person"`
+	TeamRef Team `json:"team" bson:"team"`
+	Stats LeaderStats `json:"stats" bson:"stats"`
+}
+
+type PlayerLeaderGroup struct{
+	Id string `bson:"-"`
+	Player PlayerLeader `bson:"player"`
+}
+
+
+type LeaderStats struct{
+	PlayerId int `json:"playerId,omitempty"`
+	FullName string `json:"fullName,omitempty"`
+	TeamId int `json:"teamId,omitempty"`
+	TeamFullName string `json:"teamFullName,omitempty"`
+	RankingIndex int `json:"listIndex" bson:"rankingIndex"`
+	Value float32 `json:"value" bson:"value"`
+}
+
 type Roster struct{
 	PlayerList []Player `json:"roster"`
 }
@@ -71,4 +93,49 @@ func (p Player) GetOne(filter interface{}) (*Player, error) {
 	bson.Unmarshal(body, &player)
 
 	return player, err
+}
+
+func (p Player) GetLeaders() ([]interface{}, error) {
+
+	query := []bson.D{
+		{{"$sort", bson.M{"stats.rankingIndex": 1, "measure": 1 } }},
+		{{"$group", bson.M{
+			"_id": "$measure", 
+			"player": bson.M{ 
+				"$first": "$$ROOT",
+			},
+		} }},
+        {{
+            "$project", bson.M{ "_id": 0, },
+        }},
+		{{"$lookup", bson.M{
+			"from": "teams", 
+			"localField": "player.team.id", 
+			"foreignField": "id", 
+			"as": "player.team",
+		} }},
+		{{"$unwind", "$player.team"}},
+		{{"$lookup", bson.M{
+			"from": "players", 
+			"localField": "player.person.id", 
+			"foreignField": "person.id", 
+			"as": "player.details",
+		} }},
+		{{"$unwind", "$player.details"}},
+        {{
+            "$project", bson.M{ 
+            	"player": 1, 
+            	"order": bson.M{
+            		"$eq": []string{"$player.details.position.code", "G"},
+        		},
+            },
+        }},
+		{{"$sort", bson.M{"order": 1 } }},
+	}
+
+	results, err := db.FindByAggregate("playerleaders",query)
+
+
+	return results, err
+
 }
