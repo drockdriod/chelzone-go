@@ -12,7 +12,7 @@ func ServeRoutes(parentPath *gin.RouterGroup) *gin.RouterGroup {
 
 	r.GET("/leaders", playerController.GetLeaders)
 
-	r.GET("/r/:player-slug", playerController.GetByPlayerSlug)
+	r.GET("/player/:player-slug", playerController.GetByPlayerSlug)
 
 
 	return r

@@ -3,7 +3,6 @@ package models
 import (
 	"github.com/drockdriod/chelzone-go/db"
     "github.com/mongodb/mongo-go-driver/bson"
-	"log"
 )
 
 type Team struct {
@@ -27,8 +26,6 @@ type Conference struct {
 
 func (t Team) GetAll() ([]bson.M){
 	results := db.GetItems("teams", bson.M{})
-
-	log.Println(results)
 
 	return results
 }

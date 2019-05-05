@@ -21,8 +21,8 @@
                 </v-layout>
             </v-container>
         </v-parallax>
-        <v-container>
-            <SocialMosaic />
+        <v-container grid-list-md>
+            <SocialMosaic v-bind:itemseries="tweetsByLimit" />
         </v-container>
     </div>
 </template>
@@ -37,10 +37,14 @@
 
     export default {
         components: { Divisions, SocialMosaic, LeaderStats },
-        computed: mapGetters(['teams', 'teamsByDivision', 'leaders']),
+        computed: mapGetters(['teams', 'teamsByDivision', 'leaders', 'tweets', 'tweetsByLimit']),
         created() {
             this.getTeams();
             this.getLeaders();
+            this.getTweets()
+        },
+        props:{
+            Divisions: true
         },
         data () {
             return {
@@ -51,7 +55,8 @@
         methods: {
             ...mapActions([
                 'getTeams',
-                'getLeaders'
+                'getLeaders',
+                'getTweets'
             ])
         }
     }

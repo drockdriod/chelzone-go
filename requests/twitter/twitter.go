@@ -3,11 +3,15 @@ import (
     "github.com/dghubble/go-twitter/twitter"
 	"github.com/dghubble/oauth1"
     "github.com/drockdriod/chelzone-go/db"
+    "github.com/drockdriod/chelzone-go/models"
 	"fmt"
 	"os"
+	"time"
+    "strconv"
 	"log"
 	"encoding/json"
 	mongoOptions "github.com/mongodb/mongo-go-driver/mongo/options"
+	"github.com/mongodb/mongo-go-driver/bson"
 )
 
 var client *twitter.Client
@@ -37,29 +41,59 @@ func Connect() *twitter.Client{
 	return client
 }
 
-func GetUsers(){
+func GetFollowers() (*twitter.Followers){
+	followers, _, _ := client.Followers.List(&twitter.FollowerListParams{})
 
+	fmt.Printf("SEARCH Followers:\n%+v\n", followers)
+	return followers
+}
+
+func GetTweetsFromUsers(users []bson.M){
+	var user models.SocialMediaUser
 	// userLookupParams := &twitter.UserLookupParams{ScreenName: []string{"TSNBobMckenzie"}}
 	// users, _, _ := client.Users.Lookup(userLookupParams)
 
-	searchTweetParams := &twitter.SearchTweetParams{
-		Query:     "from:TSNBobMckenzie",
-		Count:     3,
-		SinceID: 201905021800,
+    now := time.Now()
+    dateStart := now.Add(-30*time.Minute)
+
+	sinceIdStr := dateStart.Format("200601021504")
+
+    sinceId, err := strconv.ParseInt(sinceIdStr,10,64)
+    if err != nil {
+        // handle error
+        fmt.Println(err)
+        os.Exit(2)
+    }
+
+    log.Println(sinceId)
+
+	for _, item := range users {
+
+		body, _ := bson.Marshal(item)
+
+		bson.Unmarshal(body, &user)
+
+		query := fmt.Sprintf("from: %s",user.ScreenName)
+
+		searchTweetParams := &twitter.SearchTweetParams{
+			Query:     query,
+			Count:     2,
+			SinceID: sinceId,
+			TweetMode: "extended",
+		}
+
+		search, _, _ := client.Search.Tweets(searchTweetParams)
+
+		options := mongoOptions.InsertMany()
+		options.SetOrdered(false)
+
+		var items []interface{}
+		body2, _ := json.Marshal(search.Statuses)
+		json.Unmarshal(body2, &items)
+
+
+		db.InsertMany("tweets",items,options)
+		fmt.Printf("SEARCH TWEETS:\n%+v\n", search)
+		fmt.Printf("SEARCH METADATA:\n%+v\n", search.Metadata)
 	}
-	search, _, _ := client.Search.Tweets(searchTweetParams)
-
-	options := mongoOptions.InsertMany()
-	options.SetOrdered(false)
-
-	var items []interface{}
-	body, _ := json.Marshal(search.Statuses)
-	json.Unmarshal(body, &items)
-
-	log.Println(items)
-
-	db.InsertMany("tweets",items,options)
-	fmt.Printf("SEARCH TWEETS:\n%+v\n", search)
-	fmt.Printf("SEARCH METADATA:\n%+v\n", search.Metadata)
-
 }

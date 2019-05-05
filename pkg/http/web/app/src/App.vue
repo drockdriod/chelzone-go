@@ -1,9 +1,9 @@
 <template>
     <v-app>
-        <v-toolbar app>
-            <v-toolbar-title class="headline text-uppercase">
+        <v-toolbar app dark>
+            <v-toolbar-title class="headline text-uppercase" @click="navigate('home')">
                 <span>Chelzone</span>
-                <span class="font-weight-light">Stats and Such</span>
+                <span class="font-weight-light"> Hockey First</span>
             </v-toolbar-title>
             <v-spacer></v-spacer>
             <v-btn flat href="https://github.com/vuetifyjs/vuetify/releases/latest" target="_blank">
@@ -24,6 +24,16 @@ export default {
         return {
             //
         }
+    },
+    methods: {
+        navigate(name, params){
+            this.$router.push({ name, params})
+        }
     }
 }
 </script>
+<style>
+    .headline {
+        cursor: pointer;
+    }
+</style>

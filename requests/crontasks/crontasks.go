@@ -5,11 +5,16 @@ import (
 	"github.com/drockdriod/chelzone-go/requests/standings"
 	"github.com/drockdriod/chelzone-go/requests/teams"
 	"github.com/drockdriod/chelzone-go/requests/players"
+	"github.com/drockdriod/chelzone-go/requests/twitter"
     "github.com/mongodb/mongo-go-driver/bson"
 	mongoOptions "github.com/mongodb/mongo-go-driver/mongo/options"
 	"github.com/drockdriod/chelzone-go/db"
     "github.com/drockdriod/chelzone-go/models"
 	"log"
+	"net/http"
+	"fmt"
+	"os"
+    "io/ioutil"
 
 )
 
@@ -178,26 +183,50 @@ func CollectPlayerImages(){
 	}
 }
 
+func TestIp(t *http.Client){
+	resp, err := t.Get("https://www.whatismyip.com/")
+
+	if err != nil {
+		fmt.Printf("Error: %s",err)
+		os.Exit(1)
+	}
+
+	defer resp.Body.Close()
+	responseData, err := ioutil.ReadAll(resp.Body)
+	responseString := string(responseData)
+	log.Println(responseString)
+}
+
+func CollectTweetsFromFollowers(){
+	users := db.GetItems("socialmediausers", bson.M{"site":"twitter"})
+
+	twitter.GetTweetsFromUsers(users)
+}
+
 func Init(){
 	c := cron.New()
 
 	c.AddFunc("0 30 22-23 * 10,11,12,1,2,3,4 *", func() { 
-		CollectStandings()
-		CollectTopLeaders()
+		go CollectStandings()
+		go CollectTopLeaders()
 	})
 
 	c.AddFunc("0 30 2 1 9 ?", func() { 
-		CollectTeams()
+		go CollectTeams()
+	})
+
+	c.AddFunc("@every 0h30m", func() {
+		go CollectTweetsFromFollowers()
 	})
 
 
 	c.AddFunc("0 30 2 1 3,7,10 ?", func() { 
-		CollectTeamPlayers()
-		CollectPlayerImages()
+		go CollectTeamPlayers()
+		go CollectPlayerImages()
 	})
 
 	c.AddFunc("0 30 2 * 10,11,12,1,2,3,4 *", func() { 
-		CollectTeamStats()
+		go CollectTeamStats()
 	})
 
 	c.Start()

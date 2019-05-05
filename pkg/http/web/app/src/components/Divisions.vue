@@ -8,7 +8,7 @@
                 <v-card-title class="subheading font-weight-bold">{{ item.name }}</v-card-title>
                 <v-divider></v-divider>
                 <v-list dense>
-                    <v-list-tile v-for="(item,index2) in item.teams" v-bind:key="index2">
+                    <v-list-tile v-for="(item,index2) in item.teams" v-bind:key="index2" @click="navigateToTeam(item)"> 
                         <v-list-tile-content>
                             <v-avatar color="white">
                                     <img v-bind:src="convertBinary(item.logo.Data)" alt="avatar">
@@ -27,6 +27,9 @@ export default {
     methods: {
         convertBinary: (binary) => {
             return "data:image/svg+xml;base64,"+binary
+        },
+        navigateToTeam(team){
+            this.$router.push({ name: 'team', params: { slug: team.name.split(' ').join('-') }})
         }
     }
 }
