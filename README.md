@@ -6,6 +6,9 @@ Backend server and API for ChelZone, written in golang. The backend uses the web
   - Use game by game content via http://statsapi.web.nhl.com/api/v1/game/2018021002/content; 2018021002=gameID
 - https://github.com/gin-gonic/gin
 - https://developer.okta.com/blog/2018/10/23/build-a-single-page-app-with-go-and-vue
+- https://developers.google.com/youtube/v3/quickstart/go
+  - The following link will provide activity for a particular channel:
+    - https://www.googleapis.com/youtube/v3/activities?part=contentDetails,snippet&channelId=UCkUjSzthJUlO0uyUpiJfnxg&key={YOUR_API_KEY}
 
 ## MVP
 
