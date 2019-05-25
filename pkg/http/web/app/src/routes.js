@@ -13,5 +13,18 @@ export default new VueRouter({
         { path: '/', component: Home, props: true, name: "home" },
         { path: '/teams/:slug', name:"team", component: Team, props: true },
         { path: '/players/:slug', name:"player", component: Player },
-    ]
+    ],
+    scrollBehavior (to, from, savedPosition) {
+	    if (to.hash) {
+	    	return {
+		    	selector: to.hash
+		    }
+	    }
+	    else if (savedPosition) {
+		    return savedPosition
+		} else {
+		    return { x: 0, y: 0 }
+		}
+
+	}
 });

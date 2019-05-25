@@ -1,9 +1,8 @@
+import * as common from '../utils/common'
 export const tweets = (state) =>{
 	return state.tweets
 }
 
-const SOCIAL_MEDIA_LIMIT = 10
+export const socialMediaByLimit = state => common.chunk(common.shuffleArray(state.tweets.concat(state.youtubeitems)), common.SOCIAL_MEDIA_LIMIT)
 
-export const tweetsByLimit = state => 
-	Array(Math.ceil(state.tweets.length / SOCIAL_MEDIA_LIMIT)).fill().map(
-		(_, index) => index * SOCIAL_MEDIA_LIMIT).map(begin => state.tweets.slice(begin, begin + SOCIAL_MEDIA_LIMIT));
+export const socialMediaList = state => state.socialMediaList

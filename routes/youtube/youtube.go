@@ -1,16 +1,16 @@
-package twitter
+package youtube
 
 import (
 	"github.com/gin-gonic/gin"
     "github.com/drockdriod/chelzone-go/controllers"
 )
 
-var twitterController = new(controllers.TwitterController)
+var youtubeController = new(controllers.YoutubeController)
 
 func ServeRoutes(parentPath *gin.RouterGroup) *gin.RouterGroup {
-	r := parentPath.Group("/twitter")
+	r := parentPath.Group("/youtube")
 
-	r.GET("/tweets/*skip", twitterController.GetTweets)
+	r.GET("/items/*skip", youtubeController.GetYoutubeItems)
 
 
 	return r

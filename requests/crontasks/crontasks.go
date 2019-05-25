@@ -6,6 +6,7 @@ import (
 	"github.com/drockdriod/chelzone-go/requests/teams"
 	"github.com/drockdriod/chelzone-go/requests/players"
 	"github.com/drockdriod/chelzone-go/requests/twitter"
+	"github.com/drockdriod/chelzone-go/requests/youtube"
     "github.com/mongodb/mongo-go-driver/bson"
 	mongoOptions "github.com/mongodb/mongo-go-driver/mongo/options"
 	"github.com/drockdriod/chelzone-go/db"
@@ -203,6 +204,11 @@ func CollectTweetsFromFollowers(){
 	twitter.GetTweetsFromUsers(users)
 }
 
+func CollectYoutubeSearchResults(){
+	users := db.GetItems("socialmediausers", bson.M{"site":"youtube"})
+	youtube.GetVideosFromUsers(users)
+}
+
 func Init(){
 	c := cron.New()
 
@@ -217,6 +223,10 @@ func Init(){
 
 	c.AddFunc("@every 0h30m", func() {
 		go CollectTweetsFromFollowers()
+	})
+
+	c.AddFunc("@every 1h", func() {
+		go CollectYoutubeSearchResults()
 	})
 
 

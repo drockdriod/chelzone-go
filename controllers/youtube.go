@@ -6,18 +6,16 @@ import (
 	"github.com/mongodb/mongo-go-driver/bson"
 	"github.com/drockdriod/chelzone-go/models"
 	"net/http"
-	// "log"
 	"strings"
 	"strconv"
 )
 
-const QUERY_LIMIT = 50
 
-type TwitterController struct{}
+type YoutubeController struct{}
 
-var twitterModel = new(models.Twitter)
+var youtubeModel = new(models.Youtube)
 
-func (controller TwitterController) GetTweets(c *gin.Context){
+func (controller YoutubeController) GetYoutubeItems(c *gin.Context){
 	skipParam := c.Param("skip")
 	skip := "0"
 
@@ -26,13 +24,10 @@ func (controller TwitterController) GetTweets(c *gin.Context){
 	}
 	skipInt, _ := strconv.Atoi(skip)
 
-	tweets, err := twitterModel.GetTweets([]bson.D{
-		{{"$match", bson.M{
-			"in_reply_to_user_id_str":"",
+	youtubeitems, err := youtubeModel.GetYoutubeItems([]bson.D{
+		{{"$sort", bson.M{
+			"pubishedAt": -1,
 		}}},
-		// {{"$sort", bson.M{
-		// 	"created_at": -1,
-		// }}},
 		{{"$skip", skipInt}},
 		{{"$limit", QUERY_LIMIT}},
 	})
@@ -46,6 +41,6 @@ func (controller TwitterController) GetTweets(c *gin.Context){
 
 
 	c.JSON(http.StatusOK, gin.H{
-		"tweets": tweets,
+		"youtubeitems": youtubeitems,
 	})
 }

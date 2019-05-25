@@ -1,9 +1,8 @@
 import ApiClient from '../ApiClient'
 
-export const getTeams = async({commit}) => {
-	const results = await ApiClient.perform('get', '/teams/')
+export const getTeams = async({commit, dispatch}) => {
 
-	console.log(results)
+	const results = await ApiClient.perform('get', '/teams/')
 
 	commit('setTeams', results.teams)
 }

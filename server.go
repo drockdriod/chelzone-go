@@ -11,8 +11,10 @@ import (
     teamsRoute "github.com/drockdriod/chelzone-go/routes/teams"
     playersRoute "github.com/drockdriod/chelzone-go/routes/players"
     twitterRoute "github.com/drockdriod/chelzone-go/routes/twitter"
+    youtubeRoute "github.com/drockdriod/chelzone-go/routes/youtube"
     "github.com/drockdriod/chelzone-go/requests/twitter"
-	"github.com/drockdriod/chelzone-go/requests/tor"
+    "github.com/drockdriod/chelzone-go/requests/youtube"
+	// "github.com/drockdriod/chelzone-go/requests/tor"
 )
 
 
@@ -37,22 +39,27 @@ func main() {
 	log.Println("TWIITERR")
 	log.Println(twitterClient)
 
-	torClient, err := tor.Connect(ctx)
-	if err != nil {
-		log.Panicf("Unable to start Tor: %v", err)
-	}
-	log.Println("TOR")
-	log.Println(torClient)
+	youtubeClient := youtube.Connect()
+	log.Println("YOUTUBE")
+	log.Println(youtubeClient)
+
+	// torClient, err := tor.Connect(ctx)
+	// if err != nil {
+	// 	log.Panicf("Unable to start Tor: %v", err)
+	// }
+	// log.Println("TOR")
+	// log.Println(torClient)
 
 
 	go crontasks.Init()
-	go crontasks.TestIp(torClient)
+	// go crontasks.TestIp(torClient)
 
 	root := r.Group("/api")
 	{
 		teamsRoute.ServeRoutes(root) 
 		playersRoute.ServeRoutes(root)
 		twitterRoute.ServeRoutes(root)
+		youtubeRoute.ServeRoutes(root)
 	}
 
 	r.Run(":8081") // listen and serve on 0.0.0.0:8080

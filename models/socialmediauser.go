@@ -1,6 +1,6 @@
 package models
 
 type SocialMediaUser struct {
-	ScreenName string `bson:"screenName" json:"-"`
+	Identity string `bson:"identity" json:"-"`
 	Site string `bson:"site" json:"-"`
 }

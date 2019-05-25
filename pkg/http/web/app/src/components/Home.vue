@@ -13,51 +13,53 @@
                     </v-flex>
 
                     <v-flex xs12 sm12 md6 lg6 grid-list-md>
-                        <LeaderStats v-bind:leaders="leaders" />
+                        <LeaderStats v-bind:leaders="leaders" v-show="!isLoading"/>
                     </v-flex>
                     <v-flex xs12 sm12 md12 lg12 grid-list-md>
-                        <Divisions v-bind:teams="teamsByDivision" />
+                        <Divisions v-bind:teams="teamsByDivision" v-show="!isLoading" />
                     </v-flex>
                 </v-layout>
             </v-container>
         </v-parallax>
-        <v-container grid-list-md>
-            <SocialMosaic v-bind:itemseries="tweetsByLimit" />
+        <v-container grid-list-md v-show="!isLoading">
+                <SocialMosaic />
         </v-container>
     </div>
 </template>
 <script>
-    import { mapGetters, mapActions } from 'vuex'
+    import { mapGetters } from 'vuex'
 
     import Divisions from './Divisions'
     import SocialMosaic from './SocialMosaic'
     import LeaderStats from './LeaderStats'
     
     import rink from "../assets/images/rink.jpg"
-
     export default {
         components: { Divisions, SocialMosaic, LeaderStats },
-        computed: mapGetters(['teams', 'teamsByDivision', 'leaders', 'tweets', 'tweetsByLimit']),
-        created() {
-            this.getTeams();
-            this.getLeaders();
-            this.getTweets()
+        computed: mapGetters(['teams', 'teamsByDivision', 'leaders', 'isLoading']),
+        created(){
+            this.loader = this.$loading.show()
+            if(!this.isLoading){
+                this.loader.hide()
+            }
         },
-        props:{
-            Divisions: true
+        beforeUpdate(){
+
+            // let loader = this.$loading.show();
+            // this.$nextTick(function () {
+                // console.log(this.isLoading)
+                if(!this.isLoading){
+                    this.loader.hide()
+                }
+
+            // })
+
         },
         data () {
             return {
                 publicPath: process.env.BASE_URL,
                 rink
             }
-        },
-        methods: {
-            ...mapActions([
-                'getTeams',
-                'getLeaders',
-                'getTweets'
-            ])
         }
     }
 </script>

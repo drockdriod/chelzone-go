@@ -18,6 +18,7 @@
 </template>
 <script>
 
+import { mapGetters, mapActions } from 'vuex'
 export default {
     name: 'App',
     data() {
@@ -25,10 +26,26 @@ export default {
             //
         }
     },
+    created() {
+        this.setLoading(true)
+        Promise.all([
+            this.$store.dispatch('getSocialMedia',0),
+            this.getLeaders()
+        ]).then(() => {
+            this.getTeams()
+            this.setLoading(false)
+        })
+    },
     methods: {
         navigate(name, params){
             this.$router.push({ name, params})
-        }
+        },
+        ...mapActions([
+            'getTeams',
+            'getLeaders',
+            'getSocialMedia',
+            'setLoading'
+        ])
     }
 }
 </script>

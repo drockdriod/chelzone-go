@@ -73,7 +73,7 @@ func GetTweetsFromUsers(users []bson.M){
 
 		bson.Unmarshal(body, &user)
 
-		query := fmt.Sprintf("from: %s",user.ScreenName)
+		query := fmt.Sprintf("from: %s",user.Identity)
 
 		searchTweetParams := &twitter.SearchTweetParams{
 			Query:     query,
@@ -90,6 +90,8 @@ func GetTweetsFromUsers(users []bson.M){
 		var items []interface{}
 		body2, _ := json.Marshal(search.Statuses)
 		json.Unmarshal(body2, &items)
+
+		log.Println(items)
 
 
 		db.InsertMany("tweets",items,options)

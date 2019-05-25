@@ -71,7 +71,6 @@
 	  	async beforeRouteEnter(to, from, next) {
         	const slug = to.params.slug
         	const result = await ApiClient.perform('get',`/teams/${slug}`)
-        	console.log(result)
         	next(vm => vm.setTeam(result.team))
 	  		
 	  	},
@@ -79,7 +78,6 @@
             this.team = {}
             const slug = to.params.slug
             const result = await ApiClient.perform('get',`/teams/${slug}`)
-            console.log(result)
             
             this.setTeam(result.team)
             next()
