@@ -6,7 +6,7 @@ import (
     "github.com/drockdriod/chelzone-go/models"
     playerReqs "github.com/drockdriod/chelzone-go/requests/players"
     "net/http"
-    "github.com/mongodb/mongo-go-driver/bson"
+    "go.mongodb.org/mongo-driver/bson"
     "github.com/drockdriod/chelzone-go/utils"
     "log"
     "encoding/json"

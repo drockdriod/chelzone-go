@@ -1,10 +1,10 @@
 package db
 
 import (
-	"github.com/mongodb/mongo-go-driver/mongo"
-	mongoOptions "github.com/mongodb/mongo-go-driver/mongo/options"
-	bsonPrimitive "github.com/mongodb/mongo-go-driver/bson/primitive"
-	"github.com/mongodb/mongo-go-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
+	mongoOptions "go.mongodb.org/mongo-driver/mongo/options"
+	bsonPrimitive "go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/bson"
 	// "encoding/json"
 	"log"
 	"context"
@@ -25,7 +25,7 @@ func Connect(ctx context.Context) (*mongo.Database, error){
 
 	var err error
 
-	client, err = mongo.NewClient(dbDetails["dbConn"])
+	client, err = mongo.NewClient(mongoOptions.Client().ApplyURI(dbDetails["dbConn"]))
 
 	if err != nil { 
 		log.Fatal("error")

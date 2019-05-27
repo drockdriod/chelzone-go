@@ -9,8 +9,8 @@ import (
     "log"
     "github.com/drockdriod/chelzone-go/models"
     "github.com/drockdriod/chelzone-go/db"
-    "github.com/mongodb/mongo-go-driver/bson"
-	mongoOptions "github.com/mongodb/mongo-go-driver/mongo/options"
+    "go.mongodb.org/mongo-driver/bson"
+	mongoOptions "go.mongodb.org/mongo-driver/mongo/options"
 )
 
 type Stats struct{

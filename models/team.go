@@ -2,7 +2,7 @@ package models
 
 import (
 	"github.com/drockdriod/chelzone-go/db"
-    "github.com/mongodb/mongo-go-driver/bson"
+    "go.mongodb.org/mongo-driver/bson"
 )
 
 type Team struct {

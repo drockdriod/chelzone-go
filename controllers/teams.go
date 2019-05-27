@@ -5,7 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
     "github.com/drockdriod/chelzone-go/models"
     "net/http"
-    "github.com/mongodb/mongo-go-driver/bson"
+    "go.mongodb.org/mongo-driver/bson"
     "github.com/drockdriod/chelzone-go/utils"
     "log"
 )

@@ -1,5 +1,5 @@
 package models
-// import "github.com/mongodb/mongo-go-driver/bson"
+// import "go.mongodb.org/mongo-driver/bson"
 
 type TeamStats struct {
 	TeamRef Team `json:"team" bson:"team,omitempty"`

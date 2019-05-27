@@ -2,7 +2,7 @@ package models
 
 import(
 	"github.com/drockdriod/chelzone-go/db"
- //    "github.com/mongodb/mongo-go-driver/bson"
+ //    "go.mongodb.org/mongo-driver/bson"
   	"google.golang.org/api/youtube/v3"
 )
 

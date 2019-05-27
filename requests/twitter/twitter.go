@@ -10,8 +10,8 @@ import (
     "strconv"
 	"log"
 	"encoding/json"
-	mongoOptions "github.com/mongodb/mongo-go-driver/mongo/options"
-	"github.com/mongodb/mongo-go-driver/bson"
+	mongoOptions "go.mongodb.org/mongo-driver/mongo/options"
+	"go.mongodb.org/mongo-driver/bson"
 )
 
 var client *twitter.Client
