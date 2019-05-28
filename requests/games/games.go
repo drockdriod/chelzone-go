@@ -107,7 +107,10 @@ func GetGameContent(gamePK int) GameContent {
     }
 
     // Get JSON from response body and assign to data variable
-	json.Unmarshal(body, &data)
-
+	err = json.Unmarshal(body, &data)
+	if err != nil {
+        fmt.Printf("%s", err)
+        os.Exit(1)
+    }
 	return data
 }

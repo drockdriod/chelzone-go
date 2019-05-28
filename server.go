@@ -12,6 +12,7 @@ import (
     playersRoute "github.com/drockdriod/chelzone-go/routes/players"
     twitterRoute "github.com/drockdriod/chelzone-go/routes/twitter"
     youtubeRoute "github.com/drockdriod/chelzone-go/routes/youtube"
+    gamesRoute "github.com/drockdriod/chelzone-go/routes/games"
     "github.com/drockdriod/chelzone-go/requests/twitter"
     "github.com/drockdriod/chelzone-go/requests/youtube"
 	// "github.com/drockdriod/chelzone-go/requests/tor"
@@ -60,6 +61,7 @@ func main() {
 		playersRoute.ServeRoutes(root)
 		twitterRoute.ServeRoutes(root)
 		youtubeRoute.ServeRoutes(root)
+		gamesRoute.ServeRoutes(root)
 	}
 
 	r.Run(":8081") // listen and serve on 0.0.0.0:8080

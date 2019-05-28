@@ -271,9 +271,9 @@ func Init(){
 		go CollectGamesBySchedule()
 	})
 	
-	// c.AddFunc("0 30 23 * 10,11,12,1,2,3,4,5,6 *", func() { 
-		// go CollectGameContent()
-	// })
+	c.AddFunc("0 30 23 * 10,11,12,1,2,3,4,5,6 *", func() { 
+		go CollectGameContent()
+	})
 
 	c.AddFunc("0 30 2 1 9 ?", func() { 
 		go CollectTeams()

@@ -4,8 +4,8 @@ import (
 	"github.com/drockdriod/chelzone-go/db"
 	"go.mongodb.org/mongo-driver/bson"
 	"time"
-	"log"
 	"fmt"
+	"log"
 )
 
 type Game struct {
@@ -55,7 +55,7 @@ type GameMilestone struct{
 type Highlight struct{
 	Type string `json:"type" bson:"type"`
 	Id string `json:"id" bson:"id"`
-	Date time.Time `json:"date" bson:"date"`
+	Date string `json:"date" bson:"date"`
 	Title string `json:"title" bson:"title"`
 	Blurb string `json:"blurb" bson:"blurb"`
 	Description string `json:"description" bson:"description"`
@@ -63,14 +63,14 @@ type Highlight struct{
 	AuthFlow bool `json:"authFlow" bson:"authFlow"`
 	MediaPlaybackId string `json:"mediaPlaybackId" bson:"mediaPlaybackId"`
 	Image ScoreboardItemImage `json:"image,omitempty" bson:"image"`
-	Playbacks []Playback `json:"playbacks,omitempty" bson:"playbacks"`
+	Playbacks []Playback `json:"playbacks" bson:"playbacks"`
 }
 
 type Playback struct{
-	Name string `json:"name"`
-	Width string `json:"width"`
-	Height string `json:"height"`
-	Url string `json:"url"`
+	Name string `json:"name" bson:"name"`
+	Width string `json:"width" bson:"width"`
+	Height string `json:"height" bson:"height"`
+	Url string `json:"url" bson:"url"`
 }
 
 type ScoreboardItemImage struct{
@@ -104,4 +104,28 @@ func GetGamesByDate(chosenDate time.Time) []interface{} {
 
 	return items
 
+}
+
+func (g GameMilestone) GetAllMilestones() []interface{}{
+	query := []bson.D{
+		{{"$addFields",bson.M{
+			"timeAbsoluteDate": bson.M{
+				"$dateFromString": bson.M{
+					"dateString": "$timeAbsolute",
+				},
+			},
+		}}},
+		{{
+			"$sort", bson.M{
+				"timeAbsoluteDate": -1,
+			},
+		}},
+	}
+	items, err := db.FindByAggregate("gamemilestones", query)
+
+	if(err != nil){
+		log.Fatal(err.Error())
+	}
+
+	return items
 }
