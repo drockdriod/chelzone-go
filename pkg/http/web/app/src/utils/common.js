@@ -1,5 +1,6 @@
 export const SOCIAL_MEDIA_LIMIT = 10
 export const SOCIAL_MEDIA_SKIP = 50
+export const TOP_MILESTONE_LIMIT = 4
 
 export const convertFromBinary = (type = "image/svg+xml", binary) => {
     return `data:${type};base64,${binary}`

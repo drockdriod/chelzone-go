@@ -33,6 +33,7 @@ export default {
             this.getLeaders()
         ]).then(() => {
             this.getTeams()
+            this.getGameMilestones()
             this.setLoading(false)
         })
     },
@@ -44,7 +45,8 @@ export default {
             'getTeams',
             'getLeaders',
             'getSocialMedia',
-            'setLoading'
+            'setLoading',
+            'getGameMilestones'
         ])
     }
 }

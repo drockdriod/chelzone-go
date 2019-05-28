@@ -11,6 +11,9 @@ import * as PlayerActions from './actions/PlayerActions'
 import * as SocialGetters from './getters/SocialGetters'
 import * as SocialActions from './actions/SocialActions'
 
+import * as GameGetters from './getters/GameGetters'
+import * as GameActions from './actions/GameActions'
+
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
@@ -21,7 +24,8 @@ const store = new Vuex.Store({
         tweets: [],
         youtubeitems: [],
         loading: false,
-        socialMediaList: []
+        socialMediaList: [],
+        gameMilestones: []
     },
 	mutations: {
         setTeams(state, teams) {
@@ -47,6 +51,9 @@ const store = new Vuex.Store({
         },
         appendSocialMediaList(state, items) {
             state.socialMediaList.push(...items)
+        },
+        setGameMilestones(state, milestones) {
+            state.gameMilestones = milestones
         }
     },
     getters: {
@@ -55,7 +62,8 @@ const store = new Vuex.Store({
         },
         ...TeamGetters,
         ...PlayerGetters,
-        ...SocialGetters
+        ...SocialGetters,
+        ...GameGetters
     },
     actions: {
         setLoading({commit}, isLoading){
@@ -63,7 +71,8 @@ const store = new Vuex.Store({
         },
         ...TeamActions,
         ...PlayerActions,
-        ...SocialActions
+        ...SocialActions,
+        ...GameActions
     }
 })
 
