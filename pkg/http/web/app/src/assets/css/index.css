@@ -1,3 +1,24 @@
 .socialMediaContainer .socialMediaItem:hover {
 	cursor: pointer;
 }
+
+.video-container{
+	position: relative;
+	height: 500px;
+}
+
+.video-container label{
+	position: absolute;
+	top:0;
+	left:0;
+	width:100%;
+	background-color: #4d4c4b !important;
+	display: block;
+	text-align: left;
+}
+
+.video-container video{
+	position: absolute;
+	top:0;
+	right:0;
+}

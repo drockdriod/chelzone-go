@@ -15,16 +15,19 @@
                               v-for="(item,i) in topGameMilestones"
                               :key="i"
                             >
-                                <video width=564 height=450 preload controls :poster="item.imageUrl"
-                                    @canplay="updatePaused" @playing="updatePaused" @pause="updatePaused">
-                                    <source :src="item.videoUrl" type="video/mp4" />
-                                    Your browser does not support the video tag.
-                                </video>
+                                <div class="video-container">
+                                    <video width=564 height=450 preload controls :poster="item.imageUrl"
+                                        @canplay="updatePaused" @playing="updatePaused" @pause="updatePaused">
+                                        <source :src="item.videoUrl" type="video/mp4" />
+                                        Your browser does not support the video tag.
+                                    </video>
+                                    <label>{{item.highlight.description}}</label>
+                                </div>
                             </v-carousel-item>
                         </v-carousel>
                     </v-flex>
 
-                    <v-flex xs12 sm12 md6 lg6 grid-list-md>
+                    <v-flex xs12 sm12 md6 lg6 grid-list-md style="margin-top:103px">
                         <LeaderStats v-bind:leaders="leaders" v-show="!isLoading"/>
                     </v-flex>
                     <v-flex xs12 sm12 md12 lg12 grid-list-md>
