@@ -10,21 +10,7 @@
                         <p class="subheading font-weight-regular">
                             Get up to date stats, standings, in game action and more!
                         </p>
-                        <v-carousel hide-delimiters :cycle="carouselCycle">
-                            <v-carousel-item
-                              v-for="(item,i) in topGameMilestones"
-                              :key="i"
-                            >
-                                <div class="video-container">
-                                    <video width=564 height=450 preload controls :poster="item.imageUrl"
-                                        @canplay="updatePaused" @playing="updatePaused" @pause="updatePaused">
-                                        <source :src="item.videoUrl" type="video/mp4" />
-                                        Your browser does not support the video tag.
-                                    </video>
-                                    <label>{{item.highlight.description}}</label>
-                                </div>
-                            </v-carousel-item>
-                        </v-carousel>
+                        <VideoCarousel />
                     </v-flex>
 
                     <v-flex xs12 sm12 md6 lg6 grid-list-md style="margin-top:103px">
@@ -47,12 +33,13 @@
     import Divisions from './Divisions'
     import SocialMosaic from './SocialMosaic'
     import LeaderStats from './LeaderStats'
+    import VideoCarousel from './VideoCarousel'
     
     import rink from "../assets/images/rink.jpg"
 
     export default {
-        components: { Divisions, SocialMosaic, LeaderStats },
-        computed: mapGetters(['teams', 'teamsByDivision', 'leaders', 'isLoading', 'topGameMilestones']),
+        components: { Divisions, SocialMosaic, LeaderStats, VideoCarousel },
+        computed: mapGetters(['teams', 'teamsByDivision', 'leaders', 'isLoading']),
         created(){
             this.loader = this.$loading.show()
             if(!this.isLoading){
@@ -62,25 +49,7 @@
         data () {
             return {
                 publicPath: process.env.BASE_URL,
-                carouselCycle: true,
-                videoElement: null,
-                paused: null,
                 rink
-            }
-        },
-        methods: {
-            updatePaused(event) {
-                console.log(event.target.paused)
-                this.videoElement = event.target
-                this.paused = event.target.paused
-
-                this.carouselCycle = this.paused
-            },
-            play() {
-                this.videoElement.play()
-            },
-            pause() {
-                this.videoElement.pause()
             }
         },
         beforeUpdate(){

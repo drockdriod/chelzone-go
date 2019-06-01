@@ -106,6 +106,18 @@ func GetGamesByDate(chosenDate time.Time) []interface{} {
 
 }
 
+func (g Game) GetGamesByTeam() []interface{} {
+	items, err := db.FindByAggregate("gamemilestones", []bson.D{
+		
+	})
+
+	if(err != nil){
+		log.Fatal(err.Error())
+	}
+
+	return items
+}
+
 func (g GameMilestone) GetAllMilestones() []interface{}{
 	query := []bson.D{
 		{{"$addFields",bson.M{

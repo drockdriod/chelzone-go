@@ -11,7 +11,7 @@ export const topGameMilestones = (state) => {
 		{
 			...m,
 			videoUrl: m.highlight.playbacks[m.highlight.playbacks.length - 1].url,
-			imageUrl: m.highlight.image.cuts['1136x640'].src
+			imageUrl: m.highlight.image.cuts['768x432'].src
 		}
 	))]
 }

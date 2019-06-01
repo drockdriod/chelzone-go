@@ -58,3 +58,15 @@ func (controller TeamController) GetByTeamSlug(c *gin.Context) {
 
 	return
 }
+
+func (controller TeamController) GetTeamGames(c *gin.Context) {
+	teamId := c.Param("team-id")
+
+	
+}
+
+
+
+
+
+

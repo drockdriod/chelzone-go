@@ -4,17 +4,43 @@
           v-for="(item,i) in topGameMilestones"
           :key="i"
         >
-            <video width=564 height=450 preload controls
-                @canplay="updatePaused" @playing="updatePaused" @pause="updatePaused">
-                <source :src="item.highlight.playbacks[item.highlight.playbacks.length - 1].url" type="video/mp4" />
-                Your browser does not support the video tag.
-            </video>
+            <div class="video-container">
+                <video width=564 height=450 controls :poster="item.imageUrl"
+                    @canplay="updatePaused" @playing="updatePaused" @pause="updatePaused">
+                    <source :src="item.videoUrl" type="video/mp4" />
+                    Your browser does not support the video tag.
+                </video>
+                <label>{{item.highlight.description}}</label>
+            </div>
         </v-carousel-item>
     </v-carousel>
 </template>
 <script>
+    import { mapGetters } from 'vuex'
 	export default {
-		
+		computed: mapGetters(['topGameMilestones']),
+        data () {
+            return {
+                carouselCycle: true,
+                videoElement: null,
+                paused: null
+            }
+        },
+        methods: {
+            updatePaused(event) {
+                console.log(event.target.paused)
+                this.videoElement = event.target
+                this.paused = event.target.paused
+
+                this.carouselCycle = this.paused
+            },
+            play() {
+                this.videoElement.play()
+            },
+            pause() {
+                this.videoElement.pause()
+            }
+        },
 	}
 	
 </script>
