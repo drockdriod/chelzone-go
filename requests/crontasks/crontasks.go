@@ -212,7 +212,7 @@ func CollectYoutubeSearchResults(){
 
 func CollectGamesBySchedule(){
 
-	date := time.Now().Add(-1 * (time.Hour * 24*44)).Format("2006-01-02")
+	date := time.Date(2019,4,13,0,0,0,0,time.UTC).Format("2006-01-02")
 	log.Println(date)
 	schedule := games.GetSchedule(date)
 

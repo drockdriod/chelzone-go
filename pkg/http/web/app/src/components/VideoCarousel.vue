@@ -1,5 +1,5 @@
 <template>
-	<v-carousel hide-delimiters :cycle="carouselCycle">
+	<v-carousel hide-delimiters :cycle="carouselCycle" @click.native="onCarouselSlideChange">
         <v-carousel-item
           v-for="(item,i) in topGameMilestones"
           :key="i"
@@ -38,6 +38,9 @@
                 this.videoElement.play()
             },
             pause() {
+                this.videoElement.pause()
+            },
+            onCarouselSlideChange(event) {
                 this.videoElement.pause()
             }
         },

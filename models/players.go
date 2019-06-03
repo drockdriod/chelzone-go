@@ -28,29 +28,30 @@ type Player struct{
 }
 
 type PlayerStats struct{
+	Season string `json:"season" bson:"-"`
 	TimeOnIce string `json:"timeOnIce" bson:"timeOnIce"`
-	Assists int `json: "assists" bson:"assists"`
-	Goals int `json: "goals" bson:"goals"`
-	Pim int `json: "pim" bson:"pim"`
-	Shots int `json: "shots" bson:"shots"`
-	Games int `json: "games" bson:"games"`
-	Hits int `json: "hits" bson:"hits"`
-	PowerPlayGoals int `json: "powerPlayGoals" bson:"powerPlayGoals"`
-	PowerPlayPoints int `json: "powerPlayPoints" bson:"powerPlayPoints"`
+	Assists int `json:"assists" bson:"assists"`
+	Goals int `json:"goals" bson:"goals"`
+	Pim int `json:"pim" bson:"pim"`
+	Shots int `json:"shots" bson:"shots"`
+	Games int `json:"games" bson:"games"`
+	Hits int `json:"hits" bson:"hits"`
+	PowerPlayGoals int `json:"powerPlayGoals" bson:"powerPlayGoals"`
+	PowerPlayPoints int `json:"powerPlayPoints" bson:"powerPlayPoints"`
 	PowerPlayTimeOnIce string `json:"powerPlayTimeOnIce" bson:"powerPlayTimeOnIce"`
 	EvenTimeOnIce string `json:"evenTimeOnIce" bson:"evenTimeOnIce"`
 	PenaltyMinutes string `json:"penaltyMinutes" bson:"penaltyMinutes"`
-	FaceOffPct int `json: "faceOffPct" bson:"faceOffPct"`
+	FaceOffPct int `json:"faceOffPct" bson:"faceOffPct"`
 	ShotPct float32 `json:"shotPct" bson:"shotPct"`
-	GameWinningGoals int `json: "gameWinningGoals" bson:"gameWinningGoals"`
-	OverTimeGoals int `json: "overTimeGoals" bson:"overTimeGoals"`
-	ShortHandedGoals int `json: "shortHandedGoals" bson:"shortHandedGoals"`
-	ShortHandedPoints int `json: "shortHandedPoints" bson:"shortHandedPoints"`
+	GameWinningGoals int `json:"gameWinningGoals" bson:"gameWinningGoals"`
+	OverTimeGoals int `json:"overTimeGoals" bson:"overTimeGoals"`
+	ShortHandedGoals int `json:"shortHandedGoals" bson:"shortHandedGoals"`
+	ShortHandedPoints int `json:"shortHandedPoints" bson:"shortHandedPoints"`
 	ShortHandedTimeOnIce string `json:"shortHandedTimeOnIce" bson:"shortHandedTimeOnIce"`
-	Blocked int `json: "blocked" bson:"blocked"`
-	PlusMinus int `json: "plusMinus" bson:"plusMinus"`
-	Points int `json: "points" bson:"points"`
-	Shifts int `json: "shifts" bson:"shifts"`
+	Blocked int `json:"blocked" bson:"blocked"`
+	PlusMinus int `json:"plusMinus" bson:"plusMinus"`
+	Points int `json:"points" bson:"points"`
+	Shifts int `json:"shifts" bson:"shifts"`
 	TimeOnIcePerGame string `json:"timeOnIcePerGame" bson:"timeOnIcePerGame"`
 	EvenTimeOnIcePerGame string `json:"evenTimeOnIcePerGame" bson:"evenTimeOnIcePerGame"`
 	ShortHandedTimeOnIcePerGame string `json:"shortHandedTimeOnIcePerGame" bson:"shortHandedTimeOnIcePerGame"`
