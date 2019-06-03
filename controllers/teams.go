@@ -13,6 +13,7 @@ import (
 type TeamController struct{}
 
 var teamModel = new(models.Team)
+var gameModel = new(models.Game)
 
 func (controller TeamController) GetAll(c *gin.Context) {
 	teams := teamModel.GetAll()
@@ -60,9 +61,24 @@ func (controller TeamController) GetByTeamSlug(c *gin.Context) {
 }
 
 func (controller TeamController) GetTeamGames(c *gin.Context) {
-	teamId := c.Param("team-id")
+	// teamId := c.Param("team-id")
 
-	
+	// games, err := gameModel.GetByFilter([]bson.D{
+	// 	{{"$match", bson.M{"name": name }}},
+	// 	{{"$lookup",bson.M{
+	// 		"from": "teamstats",
+	// 		"localField": "id",
+	// 		"foreignField": "team.id",
+	// 		"as": "stats",
+	// 	}}},
+	// 	{{"$unwind", "$stats"}},
+	// 	{{"$lookup",bson.M{
+	// 		"from": "players",
+	// 		"localField": "id",
+	// 		"foreignField": "team.id",
+	// 		"as": "roster",
+	// 	}}},
+	// })
 }
 
 

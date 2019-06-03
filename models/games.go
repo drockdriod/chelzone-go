@@ -44,8 +44,8 @@ type GameMilestone struct{
 	TimeAbsolute string `json:"timeAbsolute" bson:"timeAbsolute"`
 	Title string `json:"title" bson:"title"`
 	Description string `json:"description" bson:"description"`
-	TeamId string `json:"teamId" bson:"teamId"`
-	PlayerId string `json:"playerId" bson:"playerId"`
+	TeamId int `json:"teamId" bson:"teamId"`
+	PlayerId int `json:"playerId" bson:"playerId"`
 	PeriodTime string `json:"periodTime" bson:"periodTime"`
 	Period string `json:"period" bson:"period"`
 	Highlight Highlight `json:"highlight" bson:"highlight"`
@@ -108,7 +108,7 @@ func GetGamesByDate(chosenDate time.Time) []interface{} {
 
 func (g Game) GetGamesByTeam() []interface{} {
 	items, err := db.FindByAggregate("gamemilestones", []bson.D{
-		
+
 	})
 
 	if(err != nil){

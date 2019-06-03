@@ -22,27 +22,53 @@
 		      <v-icon>mdi-export</v-icon>
 		    </v-btn>
 	  	</v-toolbar>
-	    
+
 	    <v-container grid-list-md>
 			<v-data-table
-			    :headers="headers"
-			    :items="team.roster"
+			    :headers="statsHeaders"
+			    :items="[team.stats]"
     			:loading="true"
-    			:rows-per-page-items="rowsPerPage"
+    			:hide-actions="true"
     			>
    				<v-progress-linear slot="progress" color="blue" indeterminate v-show="loading"></v-progress-linear>
     			<template slot="items" slot-scope="props">
-          			<tr @click="vm.$router.push({ name: 'player', params: { slug: props.item.person.fullName.split(' ').join('-') }})">
-				        <td>
-				        	<PlayerAvatar :binary="props.item.badgeImage" />
-				        </td>
-				        <td>{{ props.item.person.fullName }}</td>
-				        <td>{{ props.item.position.name }}</td>
-				        <td>{{ props.item.position.type }}</td>
-				        <td>{{ props.item.jerseyNumber }}</td>
+          			<tr>
+				        <td>{{ props.item.ptPctg }}</td>
+				        <td>{{ props.item.goalsPerGame }}</td>
+				        <td>{{ props.item.goalsAgainstPerGame }}</td>
+				        <td>{{ props.item.powerPlayPercentage }}</td>
+				        <td>{{ props.item.penaltyKillPercentage }}</td>
 				    </tr>
 			    </template>
 			</v-data-table>
+		</v-container>
+
+	    
+	    <v-container grid-list-md>
+	    	<v-flex md6 lg6>
+				<v-data-table
+				    :headers="headers"
+				    :items="team.roster"
+	    			:loading="true"
+					:rows-per-page-items="rowsPerPage"
+	    			>
+	   				<v-progress-linear slot="progress" color="blue" indeterminate v-show="loading"></v-progress-linear>
+	    			<template slot="items" slot-scope="props">
+	          			<tr @click="vm.$router.push({ name: 'player', params: { slug: props.item.person.fullName.split(' ').join('-') }})">
+					        <td>
+					        	<PlayerAvatar :binary="props.item.badgeImage" />
+					        </td>
+					        <td>{{ props.item.person.fullName }}</td>
+					        <td>{{ props.item.position.name }}</td>
+					        <td>{{ props.item.position.type }}</td>
+					        <td>{{ props.item.jerseyNumber }}</td>
+					    </tr>
+				    </template>
+				</v-data-table>
+	    	</v-flex>
+	    	<v-flex md6 lg6>
+
+	    	</v-flex>
 		</v-container>
 	</v-layout>
 </template>
@@ -65,7 +91,8 @@
 		      	],
 		      	loading: true,
 		      	rowsPerPage: [10,25,{"text":"All","value":-1}],
-		      	vm: this
+		      	vm: this,
+		      	statsHeaders: []
 		    }
 	  	},
 	  	async beforeRouteEnter(to, from, next) {
@@ -80,11 +107,13 @@
             const result = await ApiClient.perform('get',`/teams/${slug}`)
             
             this.setTeam(result.team)
+
             next()
         },
         methods: {
             setTeam(team){
             	this.team = team
+            	this.statsHeaders = this.team.stats && Object.keys(this.team.stats).map(t => ({ text: t, value: t}))
             	this.loading = false
             },
             convertFromBinary
