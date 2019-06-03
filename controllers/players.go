@@ -31,8 +31,6 @@ func (controller PlayerController) GetByPlayerSlug(c *gin.Context) {
 
 	p := playerReqs.GetPlayerStatsById(player.Person.Id)
 
-
-
 	if(err != nil){
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": err.Error(),

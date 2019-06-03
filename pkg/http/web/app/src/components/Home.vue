@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-parallax :src="rink">
+        <v-parallax :src="rink" height="3000">
             <v-container grid-list-md>
                 <v-layout text-xs-center wrap>
                     <v-flex mb-4>

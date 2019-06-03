@@ -1,6 +1,22 @@
 <template>
     <v-container grid-list-md>
-        <v-layout align-end justify-end row fill-height row>
+        <v-layout align-end justify-end row fill-height>
+            <v-flex md9 lg9>
+                <v-data-table
+                    :hide-actions="true"
+                    class="elevation-1"
+                    :items="[player.stats]"
+                    :headers="statsHeaders"
+                >
+                    <template v-slot:items="props">
+                        <td class="text-xs-right">{{ props.item.season}}</td>
+                        <td class="text-xs-right">{{ props.item.games}}</td>
+                        <td class="text-xs-right">{{ props.item.goals}}</td>
+                        <td class="text-xs-right">{{ props.item.assists}}</td>
+                        <td class="text-xs-right">{{ props.item.shots}}</td>
+                    </template>
+                </v-data-table>
+            </v-flex>
             <v-flex md3 lg3>
                 <v-card>
                     <div class="text-xs-center">
@@ -55,13 +71,20 @@ export default {
     components: { PlayerAvatar },
     data() {
         return {
-            player: {}
+            player: {},
+            seasonStats: [],
+            statsHeaders: []
         }
     },
     async beforeRouteEnter(to, from, next) {
         const slug = to.params.slug
         const result = await ApiClient.perform('get', `/players/player/${slug}`)
-        next(vm => vm.setPlayer(result.player))
+        console.log(result.player)
+        
+        next(vm => {
+            vm.setPlayer(result.player)
+            vm.setStatsHeaders(result.player.stats)
+        })
     },
     async beforeRouteUpdate(to, from, next) {
         this.player = {}
@@ -69,6 +92,8 @@ export default {
         const result = await ApiClient.perform('get', `/players/player/${slug}`)
 
         this.setPlayer(result.player)
+        this.setStatsHeaders(result.player.stats)
+        console.log(result.player)
         next()
     },
     methods: {
@@ -77,6 +102,14 @@ export default {
         },
         setPlayer(player) {
             this.player = player
+        },
+        setStatsHeaders(stats) {
+            this.statsHeaders = this.player.stats && Object.keys(this.player.stats).map(s => {
+                return s === Object.keys(this.player.stats)[0] ? { text: "Season", value: this.player.stats && this.player.stats.season } : { text: s, value: s}
+            })
+        },
+        customStatsSort(a,b){
+            return ["season", "goals", "assists"].includes(a) ? 1 : -1
         }
     }
 }

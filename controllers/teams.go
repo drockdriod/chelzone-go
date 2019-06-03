@@ -60,7 +60,7 @@ func (controller TeamController) GetByTeamSlug(c *gin.Context) {
 }
 
 func (controller TeamController) GetTeamGames(c *gin.Context) {
-	teamId := c.Param("team-id")
+	// teamId := c.Param("team-id")
 
 	
 }

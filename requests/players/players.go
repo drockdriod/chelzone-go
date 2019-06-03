@@ -24,7 +24,7 @@ type Stat struct{
 }
 
 type Split struct{
-	season string `json:"-"`
+	Season string `json:"season"`
 	PlayerStats models.PlayerStats `json:"stat"`
 }
 
@@ -86,6 +86,8 @@ func GetPlayerStatsById(id int) (models.PlayerStats){
 	json.Unmarshal(body, &data)
 
 	log.Println(data)
+
+	data.StatsList[0].Splits[0].PlayerStats.Season = data.StatsList[0].Splits[0].Season
 
 	return data.StatsList[0].Splits[0].PlayerStats
 }
