@@ -1,5 +1,5 @@
-# ChelZone Backend
-Backend server and API for ChelZone, written in golang. The backend uses the web framework Gin to set up API routes to be accessed by a frontend.
+# ChelZone
+Backend server and API for ChelZone, written in golang. The backend uses the web framework Gin to set up API routes to be accessed by a frontend, written in Vue.js.
 
 ## Resources
 - https://gitlab.com/dword4/nhlapi/blob/master/stats-api.md
